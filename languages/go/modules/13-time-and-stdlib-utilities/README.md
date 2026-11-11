@@ -16,6 +16,7 @@ Backends are full of small utilities that look trivial and hide sharp edges: a "
 Two cross-cutting habits make time-dependent code testable: **inject the clock** (a `Clock` interface or a `func() time.Time`, never `time.Now()` deep inside logic) and **inject the ticker** (so a test fires ticks by hand instead of sleeping). Exercises 1 and 3 practise exactly this.
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Instants, calendar dates | `time.Time` (value type; has a monotonic reading when it comes from `time.Now()`), `time.Date`, `Parse`, `Format`, `AddDate`, `time.UTC`, `LoadLocation` (import `time/tzdata` to embed the zone database) |
@@ -171,6 +172,7 @@ Idioms: layouts are written with the **reference time** `Mon Jan 2 15:04:05 MST 
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `Format("YYYY-MM-DD")` or `"2006-02-01"` | Layouts use the reference date `Mon Jan 2 15:04:05 MST 2006` (month 01, day 02), not `Y/M/D` letters | Use `time.DateOnly`, `time.RFC3339` or write the reference digits exactly |

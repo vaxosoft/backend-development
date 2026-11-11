@@ -22,6 +22,7 @@ source --restore/build/test--> publish output --COPY--> runtime image --run--> A
 ```
 
 ## 2. How C# Approaches It
+
 | Need | Tool | Notes |
 |------|------|-------|
 | Build / run | `dotnet build`, `dotnet run --project <dir> -- <args>` | everything after `--` goes to the app |
@@ -148,6 +149,7 @@ All commands run from `languages/csharp/`. Examples are dispatched by name: `dot
 - **Expected output:** none (the files are not executed here); a successful `docker run` then serves the same `/healthz` and `/version` responses as 3.4.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Server only reachable from the host, not the container | the default `127.0.0.1` binds loopback inside the container | `ENV ADDR=0.0.0.0:8080` (or `ASPNETCORE_URLS=http://+:8080`) and `EXPOSE`/`-p` |

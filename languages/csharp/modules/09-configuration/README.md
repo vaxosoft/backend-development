@@ -19,6 +19,7 @@ defaults < appsettings.json < appsettings.<Environment>.json < environment varia
 ```
 
 ## 2. How C# Approaches It
+
 | Piece | Role |
 |-------|------|
 | `ConfigurationBuilder` / `IConfiguration` | A flat key space with `:` separators (`Server:Port`); each source is a *provider*, later providers override earlier ones |
@@ -140,6 +141,7 @@ Run from `languages/csharp/`: `dotnet run --project modules/09-configuration/exa
 **Secrets in practice:** in development `dotnet user-secrets init` and `dotnet user-secrets set "Jwt:Secret" "..."` store values outside the repo (loaded automatically by `CreateBuilder` in the Development environment). In production use environment variables or a secret manager. Never commit them to `appsettings.json` and never print a whole configuration without redaction.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Env var `Server:Port=...` has no effect | `:` is not valid in most shells/environments | Use `Server__Port` (double underscore); with a prefix, `TT_Server__Port` |

@@ -184,6 +184,7 @@ Run everything from `languages/go/`. Servers honour `ADDR`; the outputs below we
   Two more tasks were created right after the first one (`Review PR` with `status: in_progress`, then `Ship it` with `owner_id: 7`), hence ids 2 and 3 below.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `200 OK` with `{"error":...}` | `http.Error`/`WriteHeader` forgotten; handler just encodes a struct | one `writeError(w, status, code, msg, fields)` helper that always sets the status |

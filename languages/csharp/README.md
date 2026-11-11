@@ -34,6 +34,7 @@ dotnet test modules/02-http-server/exercises --filter "FullyQualifiedName~.Ex1_"
 To peek at a solution, open the file with the same name in `solutions/`.
 
 ## Learning path
+
 | # | Module | Time |
 |---|--------|------|
 | 01 | [Language fundamentals](./modules/01-language-fundamentals/README.md) | 1.5-2h |

@@ -112,6 +112,7 @@ Run all commands from `languages/rust/`. The listed output uses `--test-threads=
 - **Everything at once:** `cargo test -p m12-testing`.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `#[test] async fn` does not compile / test never awaits | `#[test]` has no runtime | `#[tokio::test]` |

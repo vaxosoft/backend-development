@@ -8,6 +8,7 @@ Fill this in once per language before generating any module. It constrains all g
 - Why it is used for backend services (2-3 sentences):
 
 ## 2. Toolchain
+
 | Purpose | Tool | Command |
 |---------|------|---------|
 | Install / version manager | | |

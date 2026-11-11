@@ -8,6 +8,7 @@ Constrains all generated C# content. Package versions are pinned centrally in [D
 - **Why backend:** ASP.NET Core is one of the fastest mainstream web stacks, `async`/`await` originated here, and the platform ships dependency injection, configuration, logging, and hosting in the box.
 
 ## 2. Toolchain
+
 | Purpose | Tool | Command |
 |---------|------|---------|
 | Install / version manager | .NET SDK installer (`dotnet-install.sh` or package manager) | `dotnet --list-sdks` |
@@ -35,6 +36,7 @@ All commands run from `languages/csharp/`. This repo was built against SDK 10.0.
 - **Style rules:** records for DTOs, `required` members, primary constructors, `using` declarations, `CancellationToken` as the last parameter of async APIs.
 
 ## 4. Library Choices per Topic
+
 | Module | Library | Version | Why |
 |--------|---------|---------|-----|
 | 01 Fundamentals | BCL (`System.Collections.Generic`, LINQ, records, pattern matching) | .NET 10 | |
@@ -55,6 +57,7 @@ All commands run from `languages/csharp/`. This repo was built against SDK 10.0.
 **Database for examples:** SQLite via `Microsoft.Data.Sqlite` (`Data Source=:memory:` kept open by one connection, or a temp file). PostgreSQL is a documented swap: connection string and `NpgsqlConnection`; the section compiles and only connects when `DATABASE_URL` is set.
 
 ## 5. Language-specific Teaching Notes
+
 | Module | Emphasis | Typical pitfall |
 |--------|----------|-----------------|
 | 01 | classes vs structs vs records, nullable reference types, pattern matching/switch expressions, LINQ, generics with constraints, `IDisposable`/`using`, exceptions | `==` on reference types, mutating a `struct` copy, `null!` suppression, deferred LINQ execution (multiple enumeration) |

@@ -32,6 +32,7 @@ Ordered from simplest to realistic. Each example lives in `examples/` and is run
 (Repeat for 3-5 examples. The last one is built in the Task Tracker domain.)
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | | | |

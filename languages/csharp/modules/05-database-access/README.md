@@ -133,6 +133,7 @@ Run: `dotnet run --project modules/05-database-access/examples -- <name>`.
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `$"... WHERE email = '{email}'"` | interpolated strings look harmless and the analyzer is off by default | `@email` + `Parameters.AddWithValue`; only whitelisted fragments may be concatenated |

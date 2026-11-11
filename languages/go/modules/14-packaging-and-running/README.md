@@ -22,6 +22,7 @@ source -> go build (CGO off, ldflags) -> static binary -> multi-stage Docker -> 
 Docker is **not** installed on the machine this course was written on: the Dockerfile and the CI workflow here are written, explained and linted by an exercise, but not executed. Everything else runs.
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Compile | `go build -o bin/app ./cmd/app`; the result is one self-contained executable |
@@ -140,6 +141,7 @@ Idioms: put `main` in its own package so the application code is importable and 
   After `kill -TERM <pid>` the log shows `INFO listening addr=127.0.0.1:22151 version=dev` and `INFO shutting down`, and the process exits with status 0.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `exec /app: no such file or directory` on `scratch`/distroless | cgo is on by default when a C compiler exists, so the binary links libc dynamically | `CGO_ENABLED=0` in the build stage (and `GOOS=linux` when building on macOS/Windows) |

@@ -21,6 +21,7 @@ client --Bearer JWT--------> UseAuthentication -> UseAuthorization (policy) -> U
 ```
 
 ## 2. How C# Approaches It
+
 | Need | In the box | Notes |
 |------|-----------|-------|
 | Password hashing | `Rfc2898DeriveBytes.Pbkdf2` | static, span-friendly; use SHA-256 and 600k+ iterations |
@@ -126,6 +127,7 @@ All commands run from `languages/csharp/`. Examples are dispatched by name: `dot
 Not run here, but know them: **cookie auth** is `AddAuthentication().AddCookie()` + `Results.SignIn`; browser apps using cookies must also use `AddAntiforgery()`/`app.UseAntiforgery()` because browsers attach cookies automatically (CSRF). **API keys** are a custom header checked with `FixedTimeEquals` against stored hashes.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `if (password == stored)` or `SequenceEqual` on secrets | `==` short-circuits on the first difference (timing leak) | `CryptographicOperations.FixedTimeEquals` on equal-length byte arrays |

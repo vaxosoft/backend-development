@@ -16,6 +16,7 @@ Time is the most common source of backend bugs. An **instant** (a point on the t
 The rest of the module is the everyday standard library: unique ids (random or time-ordered), randomness that is cryptographically strong when it must be, hashes and HMACs, regular expressions for validation and extraction, simple templating, and a way to run a job every N minutes inside the service without a scheduler product.
 
 ## 2. How C# Approaches It
+
 | Need | BCL type | Notes |
 |------|----------|-------|
 | An instant | `DateTimeOffset` | carries an offset; compares by instant. Prefer it over `DateTime` |
@@ -130,6 +131,7 @@ All commands run from `languages/csharp/`: `dotnet run --project modules/13-time
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `DateTime.Now` / `DateTime.UtcNow` in server code | it is the shortest way, and it cannot be faked | inject `TimeProvider`; `GetUtcNow()` returns a `DateTimeOffset` |

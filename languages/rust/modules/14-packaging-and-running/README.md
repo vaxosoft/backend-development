@@ -22,6 +22,7 @@ Shipping a service means producing one reproducible artifact and running it the 
 ```
 
 ## 2. How Rust Approaches It
+
 | Concern | Rust tool |
 |---------|-----------|
 | Optimised build | `cargo build --release` (profile `release`; output in `target/release/`) |
@@ -177,6 +178,7 @@ Run all commands from `languages/rust/`.
   (`--healthcheck` against a port where nothing listens exits `1`.)
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `COPY . .` then `cargo build` in Docker: every code change re-downloads and recompiles all dependencies | The dependency layer is invalidated by any source change | Copy manifests first, build a dummy `main.rs`, then copy `src/` (see the Dockerfile) |

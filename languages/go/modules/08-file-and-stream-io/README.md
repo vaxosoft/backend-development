@@ -19,6 +19,7 @@ source (file / request body / gzip) --Read--> [ limit | tee | decode ] --Write--
 ```
 
 ## 2. How Go Approaches It
+
 | Package | Use |
 |---------|-----|
 | `io` | `Reader`, `Writer`, `Copy`, `TeeReader`, `MultiWriter`, `LimitReader`, `Pipe`, `ReadAll` (small data only) |
@@ -149,6 +150,7 @@ os.Rename(tmp.Name(), path)
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `os.ReadFile` / `io.ReadAll` on user input | Convenient; reads everything into memory | `io.Copy` to the destination, bound with `io.LimitReader`/`http.MaxBytesReader` |

@@ -162,6 +162,7 @@ Run all commands from `languages/rust/`.
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `Local::now()` / `chrono::Local` in a server | It uses the host's zone, which differs between laptop, container and prod | Use `Utc::now()`; convert with an explicit `Tz` |

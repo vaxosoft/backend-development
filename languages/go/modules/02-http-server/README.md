@@ -19,6 +19,7 @@ client -> [RequestID] -> [Logging] -> [Recover] -> mux -> handler
 ```
 
 ## 2. How Go Approaches It
+
 | Concern | Go idiom |
 |---------|----------|
 | Handler | `http.Handler` (one method `ServeHTTP`) or `http.HandlerFunc(func(w, r))` |
@@ -205,6 +206,7 @@ All commands run from `languages/go/`. Every server example listens on `ADDR` (d
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `http.ListenAndServe(addr, h)` in production | the default server has no timeouts: slow clients (Slowloris) hold connections forever | build an `http.Server` with `ReadHeaderTimeout`, `ReadTimeout`, `WriteTimeout`, `IdleTimeout` |

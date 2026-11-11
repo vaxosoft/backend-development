@@ -204,6 +204,7 @@ Router::new().nest("/v1", v1).route("/openapi.json", get(openapi)).with_state(Db
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Clients get plain-text errors for bad JSON, path or query | axum's built-in rejections are not your envelope | wrap `Json`/`Query`/`Path` with `#[from_request(via(..), rejection(ApiError))]` |
@@ -224,6 +225,7 @@ Router::new().nest("/v1", v1).route("/openapi.json", get(openapi)).with_state(Db
 - **Java/Spring:** `@Valid` + `@ControllerAdvice` correspond to validation functions + `impl IntoResponse for ApiError`.
 
 ## 6. Exercises
+
 | # | Title | Difficulty | Skill practiced | Run tests |
 |---|-------|-----------|-----------------|-----------|
 | 1 | [API error envelope](exercises/ex1-api-error) | Easy | `IntoResponse`, status mapping, `Retry-After`, rejection mapping | `cargo test -p m03-ex1-api-error` |

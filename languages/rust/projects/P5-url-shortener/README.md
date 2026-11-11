@@ -6,6 +6,7 @@
 A multi-user URL shortener: register, log in, create short links, share them (public redirect), see your hit counts, delete your own links. It adds the production concerns a real service needs: hashed passwords, JWTs, a per-user rate limit and one structured JSON log line per request that never contains a secret.
 
 ## Requirements
+
 | Endpoint | Auth | Behaviour |
 |----------|------|-----------|
 | `POST /auth/register` `{"email","password"}` | no | `201 {"id","email"}`. Email is trimmed and lowercased, must contain `@`; password at least 8 characters (else `422` with `fields`). Duplicate email `409 conflict`. The password is stored as an Argon2id hash |
@@ -43,6 +44,7 @@ cargo test -p p5-url-shortener
 Each test builds its own app on port 0 with an in-memory SQLite database (one temp file for the "stored as a hash" test), a capturing log sink and a cheap Argon2 setting (`hash_memory_kib = 64`), so tests are isolated and the suite takes well under a second once solved.
 
 ## Acceptance criteria -> tests
+
 | Criterion | Test |
 |-----------|------|
 | Register, normalised email, no password echoed | `register_creates_a_user_and_never_echoes_the_password` |

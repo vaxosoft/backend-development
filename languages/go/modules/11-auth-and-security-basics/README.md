@@ -19,6 +19,7 @@ request -> [rate limit] -> [authenticate: token/cookie -> principal in ctx] -> [
 ```
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Password hashing | `golang.org/x/crypto/bcrypt` (`GenerateFromPassword`, `CompareHashAndPassword`, 72-byte limit) |
@@ -164,6 +165,7 @@ Run from `languages/go/`.
 - **TLS:** `openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes -keyout key.pem -out cert.pem -days 1 -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"`, then run with `TLS_CERT=cert.pem TLS_KEY=key.pem` and call `curl --cacert cert.pem https://127.0.0.1:8080/tasks` (without `--cacert` curl rejects the self-signed certificate as an unknown authority; the demo certificate is for local use only). `tls.Config{MinVersion: tls.VersionTLS12}` is set on the server.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Trusting the JWT `alg` header | The keyfunc returns the key without looking at the token's method; `none` or a swapped algorithm gets through | `jwt.WithValidMethods([]string{"HS256"})`, also require `exp` and the issuer |

@@ -17,6 +17,7 @@ A useful test suite is a pyramid: many fast **unit tests** on pure logic, fewer 
 The tools are the same everywhere: a **fake** is a small working implementation (an in-memory store); a **mock/substitute** is generated and records calls so you can verify an interaction; a **contract test** runs one set of assertions against every implementation of an interface so a fake can be trusted. Benchmarks answer a different question ("how fast?") and have their own runner because naive stopwatch timing lies.
 
 ## 2. How C# Approaches It
+
 | Need | Tool | Notes |
 |------|------|-------|
 | Test framework | xUnit 2.9.3 (`[Fact]`, `[Theory]`, `[InlineData]`, `[MemberData]`) | a **new class instance per test**, so instance fields are isolated; `IClassFixture<T>` shares expensive setup deliberately |
@@ -117,6 +118,7 @@ Run with `dotnet run --project modules/12-testing/examples -- <name>`. The examp
 In a real test class this is `public class TasksApiTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>`: the factory (and its server) is shared by the class, so give each test its own data (or its own `WithWebHostBuilder` factory, as the exercise does). Code coverage comes from `dotnet test --collect:"XPlat Code Coverage"`, which needs the `coverlet.collector` package; this repo does not pin it, so it is only mentioned here.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `static` fields or a static in-memory store shared by tests | xUnit runs test **classes** in parallel; statics are shared by all | instance fields (new instance per test); `[Collection]` only when sharing is intended |

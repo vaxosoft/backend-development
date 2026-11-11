@@ -21,6 +21,7 @@ request -> [middleware 1 -> middleware 2 -> ... -> routing -> endpoint (+filters
 ```
 
 ## 2. How C# Approaches It
+
 | Concept | ASP.NET Core 10 (in the shared framework, no extra package) |
 |---------|------------------------------|
 | Host / lifecycle | `WebApplication.CreateBuilder(args)` -> `builder.Build()` -> `app.RunAsync()` (handles Ctrl-C/SIGTERM) |
@@ -210,6 +211,7 @@ Commands below use `ADDR=127.0.0.1:8080` implicitly. Responses were captured fro
   (Module 03 replaces the ad-hoc 400 strings with proper `ProblemDetails`.)
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Authentication/CORS/exception middleware has no effect | order is the order of `Use...` calls; each only sees what comes after it | exception handler first, then static files/CORS/auth, endpoints last |

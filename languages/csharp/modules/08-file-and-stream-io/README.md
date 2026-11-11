@@ -16,6 +16,7 @@ Everything that moves bytes (files, sockets, HTTP bodies, compressors) is a **st
 Streams compose like decorators: `FileStream` -> `GZipStream` -> `StreamWriter` turns text into compressed bytes on disk. The two recurring hazards are **forgetting to flush/dispose** (data is lost or invisible) and **trusting a path** that came from a user.
 
 ## 2. How C# Approaches It
+
 | Type | Role |
 |------|------|
 | `File`, `Directory`, `Path`, `FileInfo` | Static helpers for whole files, directory operations and path string manipulation |
@@ -128,6 +129,7 @@ Run from `languages/csharp/`: `dotnet run --project modules/08-file-and-stream-i
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `Path.Combine(root, userInput)` | A rooted second argument (`/etc/passwd`, `C:\x`) silently replaces the first | `Path.Join`, then `GetFullPath` and a prefix check that includes the trailing separator |

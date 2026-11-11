@@ -19,6 +19,7 @@ producer --chan--> stage --chan--> stage --chan--> consumer
 ```
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Run concurrently | `go f()`: goroutines are cheap (a few KB), scheduled by the runtime onto OS threads |
@@ -136,6 +137,7 @@ Idioms: "do not communicate by sharing memory; share memory by communicating" is
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Goroutine leak | A goroutine blocks forever on a channel nobody reads/closes, or ignores `ctx` | Every goroutine selects on `ctx.Done()` or a closed channel; buffer result channels (`make(chan T, n)`) when the receiver may leave early |

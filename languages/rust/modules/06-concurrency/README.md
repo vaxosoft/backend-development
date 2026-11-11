@@ -139,6 +139,7 @@ enum Command { Create { title: String, reply: oneshot::Sender<Task> }, List { re
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `std::thread::sleep`, heavy loops or blocking I/O inside `async fn` | the task never yields, so it freezes a runtime worker thread | `tokio::time::sleep`, `tokio::fs`, or `spawn_blocking` for CPU/blocking work |

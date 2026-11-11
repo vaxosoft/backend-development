@@ -14,6 +14,7 @@ After this module you can:
 Logs are for humans and machines investigating *what happened to one request*; metrics answer *how is the system doing overall*; health checks tell the platform *whether to send traffic or restart me*. **Structured** logging keeps the values as named fields (`TaskId=5`) next to the message, so a log system can filter and aggregate them. A **correlation id** (request id) in every line of a request lets you reassemble its story. Errors are logged with full detail on the server and answered with a generic body: the client never sees stack traces, connection strings or SQL.
 
 ## 2. How C# Approaches It
+
 | Piece | Role |
 |-------|------|
 | `ILogger<T>` (`Microsoft.Extensions.Logging`) | Injected logger, category = `T`'s full name. Levels: Trace, Debug, Information, Warning, Error, Critical |
@@ -153,6 +154,7 @@ Run from `languages/csharp/`: `dotnet run --project modules/10-logging-and-diagn
 **Profiling and debugging basics:** `dotnet-counters monitor --process-id <pid> TaskTracker` (live metrics, works with example 4's meter), `dotnet-trace collect` (CPU samples; open in Visual Studio/PerfView/Speedscope), `dotnet-dump collect` for hangs, and the IDE debugger with conditional breakpoints. `Stopwatch.GetTimestamp()`/`GetElapsedTime` for quick measurements.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `logger.LogInformation($"Task {id} created")` | Interpolation is natural C#; it formats eagerly and loses the `TaskId` property | Template + arguments: `LogInformation("Task {TaskId} created", id)` (analyzer CA2254 flags it) |

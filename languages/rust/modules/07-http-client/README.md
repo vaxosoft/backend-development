@@ -22,6 +22,7 @@ your code --Client (pool, timeouts, default headers)--> upstream
 Retries sit on top: if a call fails for a *transient* reason (connection refused, timeout, 5xx, 429) and repeating it is safe (idempotent: GET, PUT, DELETE), wait `base * 2^n` (capped, ideally with jitter) and try again.
 
 ## 2. How Rust Approaches It
+
 | Piece | Role |
 |-------|------|
 | `reqwest::Client` | async client; internally an `Arc`, so `clone()` is cheap and shares the pool |
@@ -134,6 +135,7 @@ The examples start a tiny axum server on port 0 inside the same process, so they
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `reqwest::get(url)` or `Client::new()` per request | Convenient, and it compiles; but each client has its own pool, so every call opens a new connection (example 3.3 shows 5 connections vs 1) | Build one `Client`, store it in your struct or `State`, `clone()` it freely (cheap `Arc`) |

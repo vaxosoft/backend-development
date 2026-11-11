@@ -16,6 +16,7 @@ Serialization turns in-memory values into bytes for the wire and back. The wire 
 The Task Tracker wire format (`snake_case`, `due_date` as `YYYY-MM-DD` or `null`, `tags` always an array, RFC 3339 timestamps) is used throughout.
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | JSON | `encoding/json`: `Marshal`/`Unmarshal` for values, `Encoder`/`Decoder` for streams (`http.Request.Body`) |
@@ -151,6 +152,7 @@ Idiom: define **separate request and response types** (DTOs) instead of tagging 
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Field missing from the output | Unexported (lowercase) fields are invisible to `encoding/json`; no error is raised | Export the field and tag it |

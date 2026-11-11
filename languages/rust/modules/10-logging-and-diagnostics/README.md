@@ -20,6 +20,7 @@ filter: RUST_LOG=info,tasks=debug               -> "how much do I see"
 ```
 
 ## 2. How Rust Approaches It
+
 | Piece | Role |
 |-------|------|
 | `tracing` | the facade: `info!`/`warn!`/... events, spans, `#[instrument]`, `Instrument` |
@@ -164,6 +165,7 @@ Servers (3.4, 3.5) listen on `ADDR` (default `127.0.0.1:8080`) and stop cleanly 
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `init()` panics because a global subscriber is already installed | A subscriber can be installed once per process; tests or libraries call it twice | Install only in `main`; use `try_init()` in helpers; use `with_default`/`set_default` in tests |

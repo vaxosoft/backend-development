@@ -19,6 +19,7 @@ caller -> typed client -> [handler: retry/timeout] -> [handler: headers] -> Sock
 ```
 
 ## 2. How C# Approaches It
+
 | Piece | Use |
 |-------|-----|
 | `HttpClient` | Thread-safe, meant to be long-lived and shared. Sends `HttpRequestMessage`, returns `HttpResponseMessage`. |
@@ -116,6 +117,7 @@ Every example starts a throw-away upstream on `127.0.0.1` (free port, or `ADDR` 
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `new HttpClient()` per request (or `using var c = new HttpClient()` in a method) | It looks like a disposable, so people dispose it; each instance owns a connection pool | One shared instance or `IHttpClientFactory`; never dispose a shared client |

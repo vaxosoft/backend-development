@@ -36,6 +36,7 @@ Peek at the solution under `solutions/ex1-greeter/src/` only after a real attemp
 Quality commands: `cargo fmt --all`, `cargo clippy --workspace --all-targets -- -D warnings`. Note that `cargo test --workspace` fails by design until all exercises are solved; always test one package.
 
 ## Learning path
+
 | # | Module | Time |
 |---|--------|------|
 | 01 | [Language fundamentals](./modules/01-language-fundamentals/README.md) | 2-3h |

@@ -23,6 +23,7 @@ producer -> [bounded queue] -> worker 1 \
 ```
 
 ## 2. How C# Approaches It
+
 | Need | Tool |
 |------|------|
 | Asynchronous operation | `Task` / `Task<T>` (`ValueTask` for hot paths that often complete synchronously) with `async`/`await` |
@@ -139,6 +140,7 @@ Run: `dotnet run --project modules/06-concurrency/examples -- <name>`. These exa
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `.Result` / `.Wait()` / `GetAwaiter().GetResult()` | feels simpler than making callers async; blocks a thread-pool thread (deadlocks under a `SynchronizationContext`, starves the pool in a server) | `await` all the way up |

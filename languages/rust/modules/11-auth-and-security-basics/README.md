@@ -156,6 +156,7 @@ Run all commands from `languages/rust/`.
 - **TLS:** run behind a TLS-terminating proxy, or use `rustls`; set HSTS at the proxy. Locally, plain HTTP on loopback is fine.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Hashing with Argon2 directly in an `async fn` handler | It is CPU+memory heavy; it stalls the runtime worker and every task on it | `tokio::task::spawn_blocking` (or a dedicated pool) |

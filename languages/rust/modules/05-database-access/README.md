@@ -131,6 +131,7 @@ trait TaskRepository { async fn list(&self, filter: &TaskFilter) -> Result<Page,
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Tables "disappear" in tests | every `connect("sqlite::memory:")` is a new database, and it lives only while a connection is open | build one pool, keep `max_connections(1)`, pass it around; use a file for anything long-lived |

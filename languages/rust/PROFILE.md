@@ -8,6 +8,7 @@ Constrains all generated Rust content. Dependencies are pinned in the workspace 
 - **Why backend:** predictable latency, low memory, fearless concurrency (data races are compile errors), a rich async ecosystem (tokio, axum, sqlx). It is the hardest of the three languages to start with, so the lessons explain ownership in context.
 
 ## 2. Toolchain
+
 | Purpose | Tool | Command |
 |---------|------|---------|
 | Install / version manager | rustup | `rustup update`, `rustc --version` |
@@ -35,6 +36,7 @@ All commands run from `languages/rust/`. Set `CARGO_TARGET_DIR` to a Linux path 
 - **Lints:** the workspace forbids `unsafe_code`. Starter code must not trigger clippy warnings that the solution would not (use `_arg` names).
 
 ## 4. Library Choices per Topic
+
 | Module | Stdlib / Library | Version (resolved in lock) | Why |
 |--------|------------------|---------|-----|
 | 01 Fundamentals | std (`Option`, `Result`, collections, iterators, traits) | std | |
@@ -57,6 +59,7 @@ Crate APIs change between versions; when code does not compile, read the docs fo
 **Database for examples:** SQLite via `sqlx` (`sqlite::memory:` kept alive by its pool, or a temp file). PostgreSQL is shown as a documented swap (the `postgres` feature is enabled so the example compiles; it only connects when `DATABASE_URL` is set).
 
 ## 5. Language-specific Teaching Notes
+
 | Module | Emphasis | Typical pitfall |
 |--------|----------|-----------------|
 | 01 | ownership/move/borrow, `String` vs `&str`, `Option`/`Result`, enums + `match`, traits and generics, iterators/closures, lifetimes only as far as needed | "use of moved value", returning a reference to a local, `clone()` to silence the borrow checker, `unwrap()` in handlers |

@@ -20,6 +20,7 @@ caller <- typed result or typed error <-----------------------------------------
 ```
 
 ## 2. How Go Approaches It
+
 | Piece | Role |
 |-------|------|
 | `http.Client` | policy: `Timeout`, redirects, cookie jar. Safe for concurrent use; create **once** and share |
@@ -128,6 +129,7 @@ if resp.StatusCode >= 400 {
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `http.Get(url)` / `http.DefaultClient` in a service | The default client has **no timeout**; one stuck peer blocks a goroutine forever | `&http.Client{Timeout: ...}` plus a request context |

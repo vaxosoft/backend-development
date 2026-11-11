@@ -19,6 +19,7 @@ source (File, socket, &[u8])  ->  [adapters: BufReader, take, GzDecoder]  ->  yo
 ```
 
 ## 2. How Rust Approaches It
+
 | Item | Use |
 |------|-----|
 | `std::fs` | whole-file helpers (`read_to_string`, `write`), `File`, `OpenOptions`, `read_dir`, `create_dir_all` |
@@ -123,6 +124,7 @@ source (File, socket, &[u8])  ->  [adapters: BufReader, take, GzDecoder]  ->  yo
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Output file is truncated or empty | `BufWriter`/`GzEncoder` keep data in memory; their `Drop` flushes but **swallows errors**, and a leaked or `mem::forget`-ed writer never flushes | Call `flush()?` / `finish()?` explicitly, and unwrap the layers with `into_inner()` |

@@ -20,6 +20,7 @@ The key design question is **value vs reference semantics**: does assignment cop
 pointer to it? It decides equality, mutation visibility and what is safe to share between requests.
 
 ## 2. How C# Approaches It
+
 | Need | C# tool |
 |------|---------|
 | Reference type, identity equality | `class` (use `sealed` by default) |
@@ -176,6 +177,7 @@ All examples are in one console project; a tiny dispatcher in [Program.cs](examp
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `a == b` on two equal-looking class instances is `false` | classes compare references unless they override `==` | use a `record`, or compare keys explicitly |

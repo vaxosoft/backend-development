@@ -17,6 +17,7 @@ Every backend language needs the same toolbox: types, control flow, data structu
 What you *do* have to think about is **value vs reference semantics**: assignment copies, so the question is always "what exactly got copied?" (a struct, or just a slice header pointing at shared data).
 
 ## 2. How Go Approaches It
+
 | Concern | Go idiom | Packages |
 |---------|----------|----------|
 | Enums | defined type + `iota` constants (+ `String()`) | built-in |
@@ -171,6 +172,7 @@ go build ./modules/01-language-fundamentals/...
 Debugging: `dlv debug ./modules/01-language-fundamentals/examples/05_task_store` (Delve), or `fmt.Printf("%+v\n", v)` / `%#v` for quick inspection.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `panic: assignment to entry in nil map` | `var m map[string]int` is a nil map: readable, not writable | `m := map[string]int{}` or `make` |

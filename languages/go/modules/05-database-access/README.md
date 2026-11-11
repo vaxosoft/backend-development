@@ -14,6 +14,7 @@ After this module you can:
 A service talks to its database through a **pool** of connections. Each query borrows a connection, sends SQL plus separately transmitted **parameters** (never string-concatenated values, which is how SQL injection happens), and returns it. Work that must succeed or fail as a unit runs in a **transaction**. Schema changes are recorded as ordered **migrations** so every environment reaches the same shape, and the SQL is hidden behind a **repository** so handlers and tests depend on behaviour, not on SQL.
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Portable API | `database/sql`: `*sql.DB` is a concurrency-safe **pool**, not a connection |
@@ -128,6 +129,7 @@ Idioms: no ORM and no query builder here (both are out of scope for this track);
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Tables "vanish" with `:memory:` | Every pooled connection opens its own empty in-memory DB | `db.SetMaxOpenConns(1)` (or a file DB) |

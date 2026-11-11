@@ -19,6 +19,7 @@ unit (pure functions, fakes)  ->  handler (recorder / test server)  ->  integrat
 ```
 
 ## 2. How Go Approaches It
+
 | Need | Tool |
 |------|------|
 | Test, subtest, parallelism | `testing`, `func TestXxx(t *testing.T)`, `t.Run`, `t.Parallel` |
@@ -148,6 +149,7 @@ Each example is a package with its code and its tests; "run" means `go test`. `-
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Asserting on error strings | `err.Error() == "..."` is the quickest check | Sentinels with `errors.Is`, typed errors with `errors.As`; assert on HTTP status and error `code`, not message |

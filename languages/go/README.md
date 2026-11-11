@@ -34,6 +34,7 @@ Peek at `_solutions/` only after a real attempt. Test a package, not `./...`: `g
 Quality commands: `gofmt -l .`, `go vet ./...`, `go test -race <package>`.
 
 ## Learning path
+
 | # | Module | Time |
 |---|--------|------|
 | 01 | [Language fundamentals](./modules/01-language-fundamentals/README.md) | 2h |

@@ -23,6 +23,7 @@ bytes --parse--> tokens --bind--> DTO --validate--> domain object
 Three details cause most bugs: how names map (`due_date` vs `DueDate`), how `null`/absent/unknown members behave, and how dates and enums look on the wire.
 
 ## 2. How C# Approaches It
+
 | Need | Tool | Notes |
 |------|------|-------|
 | JSON | `System.Text.Json` (STJ), in the BCL | fast, UTF-8 native; Newtonsoft.Json is not needed |
@@ -174,6 +175,7 @@ Run an example with `dotnet run --project modules/04-serialization/examples -- <
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `Deserialize` ignores `due_date` / returns defaults | raw `JsonSerializerOptions` is case-sensitive and PascalCase; names do not match | one shared options object with `PropertyNamingPolicy` (and `Web` defaults for case-insensitivity) |

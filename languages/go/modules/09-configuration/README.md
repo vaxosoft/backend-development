@@ -21,6 +21,7 @@ defaults  ->  config file  ->  environment  ->  command-line flags   (later wins
 ```
 
 ## 2. How Go Approaches It
+
 | Tool | Role |
 |------|------|
 | `os.LookupEnv` | env access that distinguishes unset from empty (`os.Getenv` cannot) |
@@ -183,6 +184,7 @@ srv := &http.Server{Handler: NewHandler(cfg, &memStore{}, logger), ...}
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `os.Getenv("X") == ""` to mean "unset" | `Getenv` cannot tell unset from empty | `os.LookupEnv`, then decide how to treat `""` |

@@ -23,6 +23,7 @@ String (owner) --move--> consume(String)     the old binding is dead
 ```
 
 ## 2. How Rust Approaches It
+
 | Need | Rust tool |
 |------|-----------|
 | Memory safety without GC | ownership, borrowing, lifetimes (mostly inferred, "elided") |
@@ -173,6 +174,7 @@ by_status.entry(task.status).or_default().push(task.id);   // BTreeMap<Status, V
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `error[E0382]: borrow of moved value` | passing a `String`/`Vec` by value moves it | pass `&x`, or return the value back, or `clone()` only if you really need two copies |

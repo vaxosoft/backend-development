@@ -21,6 +21,7 @@ defaults  <  config file (TOML)  <  environment variables  <  command-line flags
 ```
 
 ## 2. How Rust Approaches It
+
 | Piece | Role |
 |-------|------|
 | `std::env::var` | read one variable; `Err(NotPresent)` vs `Err(NotUnicode)` |
@@ -146,6 +147,7 @@ defaults  <  config file (TOML)  <  environment variables  <  command-line flags
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `std::env::var("X")` scattered through handlers | It is a global, easy to call anywhere, and untestable | Read once at startup into a `Config`; inject a lookup closure in tests |

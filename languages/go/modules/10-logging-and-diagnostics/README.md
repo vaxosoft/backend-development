@@ -23,6 +23,7 @@ request -> [request ID] -> [access log] -> [recover] -> handler -> response
 ```
 
 ## 2. How Go Approaches It
+
 | Piece | Role |
 |-------|------|
 | `log/slog` | standard structured logger: `Logger`, `Handler` (`TextHandler`, `JSONHandler`), `Level`/`LevelVar`, `Attr`, `LogValuer` |
@@ -169,6 +170,7 @@ defer func() {
   Profile it: `go tool pprof http://127.0.0.1:6060/debug/pprof/heap`.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | `logger.Info("x")` in helpers loses the request ID | Without a `ctx` the context handler cannot see the value | Use `InfoContext(ctx, ...)` everywhere you have a context |

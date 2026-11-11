@@ -247,6 +247,7 @@ async fn get_one(State(db): State<Db>, Path(id): Path<u32>) -> Result<Json<Task>
   ```
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Body extractor (`Json`, `Form`, `Bytes`, `Multipart`) before another extractor | the body can be consumed once; axum requires the last parameter to take it | put exactly one body extractor last |
@@ -267,6 +268,7 @@ async fn get_one(State(db): State<Db>, Path(id): Path<u32>) -> Result<Json<Task>
 - **C#/Java:** model binding errors become *rejections*; the `IntoResponse` trait plays the role of `IActionResult`.
 
 ## 6. Exercises
+
 | # | Title | Difficulty | Skill practiced | Run tests |
 |---|-------|-----------|-----------------|-----------|
 | 1 | [Greeter router](exercises/ex1-greeter) | Easy | routes, `Path`, `Query`, `Json` response, fallback | `cargo test -p m02-ex1-greeter` |

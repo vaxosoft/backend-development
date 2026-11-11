@@ -6,6 +6,7 @@
 Build a small service whose single endpoint `GET /aggregate?ids=1,2,3` calls an upstream API for every id **concurrently**, retries flaky calls, and merges the answers in request order. One slow or broken upstream item must never break the whole response, and a client that goes away must stop costing upstream calls.
 
 ## Requirements
+
 | Area | Rule |
 |------|------|
 | Endpoint | `GET /aggregate?ids=1,2,3` calls `GET {upstream_base}/items/{id}` for each id |
@@ -40,6 +41,7 @@ cargo test -p p4-api-aggregator
 The tests start a **fake upstream** (an axum server on port 0 that counts attempts, tracks how many calls are in flight at once, and injects delays and failures) and the aggregator on another random loopback port. They run in well under a second once solved.
 
 ## Acceptance criteria -> tests
+
 | Criterion | Test |
 |-----------|------|
 | 400 + envelope for missing / empty / malformed ids | `missing_ids_is_400_with_error_envelope`, `empty_ids_is_400`, `non_numeric_negative_or_blank_entries_are_400` |

@@ -8,6 +8,7 @@ Constrains all generated Go content. Dependencies are pinned in [go.mod](./go.mo
 - **Why backend:** the standard library ships a production-grade HTTP server, JSON, SQL interface, TLS and testing tools. Goroutines make concurrent I/O simple, and deployment is one static binary.
 
 ## 2. Toolchain
+
 | Purpose | Tool | Command |
 |---------|------|---------|
 | Install / version manager | go.dev installer (or `go install golang.org/dl/...`) | `go version` |
@@ -53,6 +54,7 @@ Standard library first. Third-party packages are listed with the reason.
 **Database for examples:** SQLite (`modernc.org/sqlite`, in-memory or temp file, driver name `"sqlite"`). PostgreSQL appears only as a documented, non-executed swap (the example compiles; it runs only when `DATABASE_URL` is set and otherwise prints a skip message).
 
 ## 5. Language-specific Teaching Notes
+
 | Module | Emphasis | Typical pitfall |
 |--------|----------|-----------------|
 | 01 | Zero values, value vs pointer receivers, slices (len/cap/aliasing), implicit interfaces, `error` as a value, `defer` | nil map write, loop-variable capture (fixed in 1.22 but explain), nil-interface-holding-nil-pointer, modifying a slice during `append` aliasing |

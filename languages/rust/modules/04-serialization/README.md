@@ -173,6 +173,7 @@ struct ApiJson<T>(T);          // Json<T>, but rejections use our envelope
   (`json!` orders object keys alphabetically, so `message` follows `fields`; JSON object order is not significant.)
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | PATCH cannot clear a field (`null` is ignored) | `Option<Option<T>>` deserializes `null` as the outer `None` | `#[serde(default, deserialize_with = "double_option")]` (ex. 2) |

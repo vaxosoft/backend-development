@@ -178,6 +178,7 @@ In the output below `trace_id` (a per-request value ProblemDetails adds) is stri
   The list response is `{"items":[...],"total":1,"limit":20,"offset":0}`.
 
 ## 4. Common Pitfalls
+
 | Mistake | Why it happens | Fix |
 |---------|----------------|-----|
 | Clients set `id`, `created_at`, `is_admin` and it sticks (over-posting) | the handler binds the entity/storage type | bind a dedicated input record; map explicitly |

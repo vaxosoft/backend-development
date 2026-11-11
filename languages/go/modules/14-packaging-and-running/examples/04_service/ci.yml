@@ -1,0 +1,43 @@
+# Copy to .github/workflows/ci.yml at the repository root (paths below assume languages/go).
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: languages/go
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: languages/go/go.mod
+          cache-dependency-path: languages/go/go.sum
+      - name: Download modules
+        run: go mod download
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
+      - name: Vet
+        run: go vet ./...
+      - name: Test
+        run: go test -race ./...
+      - name: Build
+        run: CGO_ENABLED=0 go build -trimpath -o bin/service ./modules/14-packaging-and-running/examples/04_service
+
+  image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -f modules/14-packaging-and-running/examples/04_service/Dockerfile -t tasks:ci --build-arg COMMIT=${{ github.sha }} .
+        working-directory: languages/go

@@ -1,0 +1,12 @@
+[package]
+name = "m01-language-fundamentals"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+thiserror = { workspace = true }
+futures = { workspace = true }
+
+[lints]
+workspace = true

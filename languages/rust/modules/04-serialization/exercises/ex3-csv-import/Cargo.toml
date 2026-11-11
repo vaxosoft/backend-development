@@ -1,0 +1,15 @@
+[package]
+name = "m04-ex3-csv-import"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+csv = { workspace = true }
+thiserror = { workspace = true }

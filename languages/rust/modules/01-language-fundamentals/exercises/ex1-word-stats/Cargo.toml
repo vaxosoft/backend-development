@@ -1,0 +1,8 @@
+[package]
+name = "m01-ex1-word-stats"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

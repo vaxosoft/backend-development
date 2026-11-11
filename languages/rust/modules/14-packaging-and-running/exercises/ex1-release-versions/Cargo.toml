@@ -1,0 +1,11 @@
+[package]
+name = "m14-ex1-release-versions"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+thiserror = { workspace = true }

@@ -1,0 +1,17 @@
+[package]
+name = "m14-packaging-and-running"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description = "Packaging and running a Rust service: profiles, build info, flags, Docker, CI"
+build = "build.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+axum = { workspace = true }
+clap = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }

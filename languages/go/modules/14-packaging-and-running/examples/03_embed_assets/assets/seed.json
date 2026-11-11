@@ -1,0 +1,4 @@
+[
+  {"id": 1, "title": "Write docs", "status": "todo", "tags": ["docs"]},
+  {"id": 2, "title": "Ship it", "status": "in_progress", "tags": []}
+]

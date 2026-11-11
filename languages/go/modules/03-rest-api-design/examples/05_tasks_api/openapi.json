@@ -1,0 +1,96 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Task Tracker API", "version": "1.0.0" },
+  "servers": [{ "url": "/v1" }],
+  "paths": {
+    "/tasks": {
+      "get": {
+        "summary": "List tasks",
+        "parameters": [
+          { "name": "status", "in": "query", "schema": { "$ref": "#/components/schemas/Status" } },
+          { "name": "tag", "in": "query", "schema": { "type": "string" } },
+          { "name": "sort", "in": "query", "schema": { "type": "string", "enum": ["created_at", "-created_at", "due_date", "-due_date"], "default": "-created_at" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 } },
+          { "name": "offset", "in": "query", "schema": { "type": "integer", "minimum": 0, "default": 0 } }
+        ],
+        "responses": {
+          "200": { "description": "A page of tasks", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskPage" } } } },
+          "400": { "$ref": "#/components/responses/Error" }
+        }
+      },
+      "post": {
+        "summary": "Create a task",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskInput" } } } },
+        "responses": {
+          "201": { "description": "Created; Location points at the new task", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Task" } } } },
+          "400": { "$ref": "#/components/responses/Error" },
+          "413": { "$ref": "#/components/responses/Error" },
+          "422": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "summary": "Get a task", "responses": { "200": { "description": "The task", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Task" } } } }, "404": { "$ref": "#/components/responses/Error" } } },
+      "put": {
+        "summary": "Replace a task",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskInput" } } } },
+        "responses": { "200": { "description": "The updated task" }, "404": { "$ref": "#/components/responses/Error" }, "422": { "$ref": "#/components/responses/Error" } }
+      },
+      "patch": {
+        "summary": "Change title, status, due_date or tags; absent fields stay, due_date null clears",
+        "responses": { "200": { "description": "The updated task" }, "404": { "$ref": "#/components/responses/Error" }, "422": { "$ref": "#/components/responses/Error" } }
+      },
+      "delete": { "summary": "Delete a task", "responses": { "204": { "description": "Deleted" }, "404": { "$ref": "#/components/responses/Error" } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Status": { "type": "string", "enum": ["todo", "in_progress", "done"] },
+      "TaskInput": {
+        "type": "object",
+        "required": ["title"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "status": { "$ref": "#/components/schemas/Status" },
+          "due_date": { "type": ["string", "null"], "format": "date" },
+          "tags": { "type": "array", "maxItems": 10, "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 30 } },
+          "owner_id": { "type": ["integer", "null"] }
+        }
+      },
+      "Task": {
+        "allOf": [
+          { "$ref": "#/components/schemas/TaskInput" },
+          { "type": "object", "properties": { "id": { "type": "integer", "readOnly": true }, "created_at": { "type": "string", "format": "date-time", "readOnly": true } } }
+        ]
+      },
+      "TaskPage": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Task" } },
+          "total": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "offset": { "type": "integer" }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "fields": { "type": "object", "additionalProperties": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Error": { "description": "Error envelope", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+    }
+  }
+}

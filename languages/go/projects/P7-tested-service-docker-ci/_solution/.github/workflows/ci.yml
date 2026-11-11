@@ -1,0 +1,38 @@
+name: ci
+
+# Copy this file to .github/workflows/ at the root of your repository.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: languages/go
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: languages/go/go.mod
+          cache-dependency-path: languages/go/go.sum
+
+      - name: Restore modules
+        run: go mod download
+
+      - name: Build
+        run: go build ./projects/P7-tested-service-docker-ci/...
+
+      - name: Format check
+        run: test -z "$(gofmt -l projects/P7-tested-service-docker-ci)"
+
+      - name: Lint
+        run: go vet ./projects/P7-tested-service-docker-ci/...
+
+      - name: Test
+        run: go test -race ./projects/P7-tested-service-docker-ci/...

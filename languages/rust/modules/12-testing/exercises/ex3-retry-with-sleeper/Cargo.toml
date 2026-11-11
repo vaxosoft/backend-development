@@ -1,0 +1,11 @@
+[package]
+name = "m12-ex3-retry-with-sleeper"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+tokio = { workspace = true }

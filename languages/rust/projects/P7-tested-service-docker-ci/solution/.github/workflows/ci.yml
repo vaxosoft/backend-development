@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # The Cargo workspace root of this repository.
+        working-directory: languages/rust
+    steps:
+      - uses: actions/checkout@v4
+
+      # Keep in sync with the `rust:` tag in the Dockerfile (a test checks this).
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.99"
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: languages/rust
+
+      - name: Build
+        run: cargo build --locked -p p7-tested-service-docker-ci --all-targets
+
+      - name: Format check
+        run: cargo fmt -p p7-tested-service-docker-ci -- --check
+
+      - name: Lint
+        run: cargo clippy --locked -p p7-tested-service-docker-ci --all-targets -- -D warnings
+
+      - name: Test
+        run: cargo test --locked -p p7-tested-service-docker-ci

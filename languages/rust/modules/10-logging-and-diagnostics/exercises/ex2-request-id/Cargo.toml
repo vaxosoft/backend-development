@@ -1,0 +1,18 @@
+[package]
+name = "m10-ex2-request-id"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+axum = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tower = { workspace = true }
+tracing-subscriber = { workspace = true }

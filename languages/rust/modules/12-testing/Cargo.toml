@@ -1,0 +1,50 @@
+[package]
+name = "m12-testing"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+# examples/ holds the lesson's test targets, declared below
+autoexamples = false
+
+[lints]
+workspace = true
+
+[dependencies]
+axum = { workspace = true }
+chrono = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+
+[dev-dependencies]
+criterion = { workspace = true }
+http-body-util = { workspace = true }
+sqlx = { workspace = true }
+tower = { workspace = true }
+wiremock = { workspace = true }
+
+[[test]]
+name = "unit_and_table"
+path = "examples/unit_and_table.rs"
+
+[[test]]
+name = "handler_oneshot"
+path = "examples/handler_oneshot.rs"
+
+[[test]]
+name = "fakes_and_isolation"
+path = "examples/fakes_and_isolation.rs"
+
+[[test]]
+name = "db_integration"
+path = "examples/db_integration.rs"
+
+[[test]]
+name = "wiremock_webhook"
+path = "examples/wiremock_webhook.rs"
+
+[[bench]]
+name = "slugify"
+harness = false

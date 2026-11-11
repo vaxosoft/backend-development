@@ -1,0 +1,205 @@
+/* Learning layer: lesson bar, progress boards, language tabs, home cards. Uses Starlight theme variables. */
+
+.lesson-bar {
+  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-color-bg-nav);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  margin: 0 0 1.5rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.lesson-bar.bottom {
+  margin: 2rem 0 0;
+  display: flex;
+  justify-content: flex-end;
+  border-style: dashed;
+}
+.lesson-bar .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-size: var(--sl-text-sm);
+}
+.lesson-bar .label {
+  color: var(--sl-color-gray-3);
+  min-width: 6.5rem;
+}
+.lesson-bar a,
+.lesson-bar .current {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--sl-color-gray-5);
+  text-decoration: none;
+}
+.lesson-bar a:hover {
+  border-color: var(--sl-color-accent);
+}
+.lesson-bar .current {
+  background: var(--sl-color-accent-low);
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+  font-weight: 600;
+}
+.lesson-bar a.compare {
+  margin-left: 0.5rem;
+  border-style: dashed;
+}
+
+button.done-toggle,
+button.reset-progress,
+.lang-tab-buttons button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  border: 1px solid var(--sl-color-gray-4);
+  background: var(--sl-color-gray-6);
+  color: var(--sl-color-white);
+  padding: 0.25rem 0.8rem;
+}
+.lesson-bar button.done-toggle {
+  margin: 0 !important;
+}
+button.done-toggle:hover,
+button.reset-progress:hover {
+  border-color: var(--sl-color-accent);
+}
+button.done-toggle.is-done {
+  background: var(--sl-color-green-low);
+  border-color: var(--sl-color-green);
+}
+
+/* sidebar completion tick */
+.sidebar-content a.lesson-done::after {
+  content: '✓';
+  margin-inline-start: 0.4rem;
+  color: var(--sl-color-green);
+  font-weight: 700;
+}
+
+/* progress boards */
+.progress-board .board-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+.progress-board .bar {
+  flex: 1;
+  height: 0.55rem;
+  background: var(--sl-color-gray-5);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-board .bar span {
+  display: block;
+  height: 100%;
+  background: var(--sl-color-green);
+  transition: width 0.2s;
+}
+.progress-board .pct {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+  white-space: nowrap;
+}
+.progress-board .board-group {
+  display: inline-block;
+  vertical-align: top;
+  min-width: min(18rem, 100%);
+  margin-right: 2rem;
+}
+.progress-board h4 {
+  margin: 0.5rem 0 0.2rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.progress-board ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.progress-board li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0 !important;
+}
+.progress-board .time {
+  margin-left: auto;
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-xs);
+}
+
+.continue-box:not(:empty) {
+  padding: 0.6rem 1rem;
+  margin: 0 0 1rem;
+  border-left: 3px solid var(--sl-color-accent);
+  background: var(--sl-color-accent-low);
+  border-radius: 0.3rem;
+}
+
+/* home cards */
+.lang-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.lang-card {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.6rem;
+  padding: 1rem 1.2rem;
+  background: var(--sl-color-bg-nav);
+}
+.lang-card h3 {
+  margin: 0 0 0.3rem;
+}
+.lang-card .actions {
+  display: flex;
+  gap: 0.6rem;
+}
+.lang-card .actions a {
+  padding: 0.25rem 0.8rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.4rem;
+  text-decoration: none;
+}
+.lang-card .actions a.primary {
+  background: var(--sl-color-accent);
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-black);
+}
+
+/* language tabs (compare pages); without JS every panel stays visible */
+.js-tabs .lang-panel {
+  display: none;
+}
+.js-tabs .lang-panel.active {
+  display: block;
+}
+.lang-tab-buttons {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+.lang-tab-buttons button {
+  margin: 0 !important; /* beat Starlight's sibling spacing rule */
+}
+.lang-tab-buttons button.active {
+  background: var(--sl-color-accent-low);
+  border-color: var(--sl-color-accent);
+}
+
+details.solution {
+  margin-top: 1.5rem;
+  border: 1px dashed var(--sl-color-gray-4);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+details.solution > summary {
+  cursor: pointer;
+  font-weight: 600;
+}

@@ -1,0 +1,7 @@
+# BuildKit picks up <Dockerfile name>.dockerignore next to the Dockerfile.
+**/.git
+**/bin
+**/*.test
+**/*.db
+**/*.log
+**/.env*

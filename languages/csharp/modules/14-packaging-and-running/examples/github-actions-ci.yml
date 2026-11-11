@@ -1,0 +1,66 @@
+# Copy to .github/workflows/ci.yml in a real repository. Written for this lesson; not executed here.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: languages/csharp
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: languages/csharp/global.json
+          cache: true
+          cache-dependency-path: languages/csharp/Directory.Packages.props
+
+      - name: Restore
+        run: dotnet restore modules/14-packaging-and-running/exercises
+
+      - name: Format (lint part 1)
+        run: dotnet format whitespace modules/14-packaging-and-running/examples --verify-no-changes
+
+      - name: Build (analyzers + warnings as errors are lint part 2)
+        run: dotnet build modules/14-packaging-and-running/examples -c Release
+
+      - name: Test
+        run: dotnet test modules/14-packaging-and-running/exercises --logger "trx;LogFileName=test-results.trx"
+
+      - name: Publish single-file binary
+        run: >
+          dotnet publish modules/14-packaging-and-running/examples
+          -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true
+          -p:SourceRevisionId=${{ github.sha }} -o out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: task-service-linux-x64
+          path: languages/csharp/out/M14.Examples
+          if-no-files-found: error
+
+  docker:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        working-directory: languages/csharp
+        run: >
+          docker build
+          -f modules/14-packaging-and-running/examples/Dockerfile
+          --build-arg GIT_SHA=${{ github.sha }}
+          -t task-service:${{ github.sha }} .

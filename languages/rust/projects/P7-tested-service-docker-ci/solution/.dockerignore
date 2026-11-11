@@ -1,0 +1,9 @@
+# Docker reads this file from the root of the build context. In this repository the
+# context is the Cargo workspace root (languages/rust); in a standalone repository
+# of this service it sits next to the Dockerfile.
+target
+**/target
+.git
+.github
+**/solution
+**/*.db

@@ -16,7 +16,15 @@ site/.astro/
 site/src/content/docs/
 site/src/generated/
 
-# saved browser pages
-*_files/
-*.html
-!site/**/*.html
+# saved browser pages (repo root only)
+/*_files/
+/*.html
+
+# dependencies and tool caches
+node_modules/
+dist/
+.venv/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/

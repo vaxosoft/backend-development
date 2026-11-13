@@ -1,0 +1,5 @@
+{
+  "port": 9000,
+  "logLevel": "warn",
+  "dataDir": "/var/lib/tracker"
+}

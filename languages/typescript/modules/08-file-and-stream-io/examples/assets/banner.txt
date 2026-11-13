@@ -1,0 +1,3 @@
+Task Tracker export tool
+-----------------------
+This file ships next to the code and is found through import.meta.dirname.

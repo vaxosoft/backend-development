@@ -17,7 +17,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Backend Learning Paths',
-      description: 'Learn backend development in Go, Rust and C#.',
+      description: 'Learn backend development in Go, Rust, C#, TypeScript and Python.',
       customCss: ['./src/styles/learn.css'],
       head: [{ tag: 'script', attrs: { src: `${base}/learn.js`, defer: true } }],
       social: repoUrl ? [{ icon: 'github', label: 'GitHub', href: repoUrl }] : [],

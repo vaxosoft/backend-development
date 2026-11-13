@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verify a language track.
 
-    scripts/verify.py <go|rust|csharp> [name-filter]
+    scripts/verify.py <go|rust|csharp|typescript|python> [name-filter]
 
 Works on a throw-away copy of languages/<lang> (fast Linux filesystem, nothing
 in the repo is modified). For every exercise and capstone project it checks:
@@ -18,6 +18,11 @@ Layout contract (see framework/README.md, "Repository mechanics"):
   modules/NN-topic/solutions/...       files overlaid on exercises/
   projects/PN-name/{starter,solution,tests}/
 (Go uses _solutions/ and _solution/ so the Go tool ignores them.)
+
+Tool locations (override with env vars): Node in ~/.node/bin, the Python venv in
+~/.venvs/backend-python (VERIFY_VENV), .NET in ~/.dotnet-sdk, Go in ~/.local/go,
+Rust in ~/.cargo. TypeScript reuses languages/typescript/node_modules (symlinked
+into the temp copy), so run `npm ci` there first.
 """
 import os
 import re
@@ -33,12 +38,30 @@ SRC = ROOT / "languages" / LANG
 WORK = Path(os.environ.get("VERIFY_WORKDIR") or f"/tmp/verify-{LANG}-{os.getpid()}")
 SOL = "_solution" if LANG == "go" else "solution"
 SOLS = SOL + "s"
-IGNORE = shutil.ignore_patterns("bin", "obj", "target", ".git", "node_modules", "*.db", "*.db-*")
+IGNORE = shutil.ignore_patterns("bin", "obj", "target", ".git", "node_modules", "dist", ".venv", "__pycache__",
+                                ".pytest_cache", ".mypy_cache", ".ruff_cache", "*.db", "*.db-*")
+VENV = Path(os.environ.get("VERIFY_VENV") or f"{Path.home()}/.venvs/backend-python")
 
 env = os.environ.copy()
-env["PATH"] = f"{Path.home()}/.dotnet-sdk:{Path.home()}/.local/go/bin:{Path.home()}/.cargo/bin:" + env["PATH"]
+env["PATH"] = (f"{VENV}/bin:{Path.home()}/.node/bin:{Path.home()}/.dotnet-sdk:{Path.home()}/.local/go/bin:"
+               f"{Path.home()}/.cargo/bin:") + env["PATH"]
 env.update(DOTNET_NOLOGO="1", DOTNET_CLI_TELEMETRY_OPTOUT="1", CARGO_TARGET_DIR="/tmp/target-verify",
-           CARGO_TERM_COLOR="never", NO_COLOR="1")
+           CARGO_TERM_COLOR="never", NO_COLOR="1", VIRTUAL_ENV=str(VENV), PYTHONDONTWRITEBYTECODE="1")
+
+# mypy cannot check duplicate module names (examples/01_x.py in every module) in one run, so check per directory.
+MYPY_LOOP = r"""
+set -e
+dirs=$(ls -d modules/[0-9][0-9]-*/examples modules/[0-9][0-9]-*/exercises/* projects/P[1-9]*/starter projects/P[1-9]*/tests 2>/dev/null | grep -v '/00-' || true)
+for d in $dirs; do
+  if ls "$d"/*.py "$d"/*/*.py >/dev/null 2>&1; then
+    case "$d" in
+      projects/*) export MYPYPATH="$(echo "$d" | cut -d/ -f1-2)/starter" ;;
+      *) unset MYPYPATH ;;
+    esac
+    mypy "$d" || { echo "mypy failed in $d"; exit 1; }
+  fi
+done
+"""
 
 failures: list[str] = []
 results: list[tuple[str, str]] = []
@@ -60,7 +83,7 @@ def record(name, ok, detail=""):
 
 def overlay(solution: Path, target: Path):
     for f in solution.rglob("*"):
-        if f.is_file() and not any(p in ("bin", "obj", "target") for p in f.parts):
+        if f.is_file() and not any(p in ("bin", "obj", "target", "__pycache__") for p in f.parts):
             dest = target / f.relative_to(solution)
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(f, dest)
@@ -79,7 +102,14 @@ def restore(solution: Path, target: Path, orig_target: Path):
 
 # Per-language adapters -------------------------------------------------------
 
-def compile_error(out: str) -> bool:
+def compile_error(out: str, rc: int) -> bool:
+    """True when the starter failed for the wrong reason (does not build/import) instead of failing its tests."""
+    if LANG == "python":
+        # pytest: 1 = tests failed; 2 = collection/import error; 5 = nothing collected
+        return rc != 1 or bool(re.search(r"ERROR collecting|SyntaxError|IndentationError|ModuleNotFoundError", out))
+    if LANG == "typescript":
+        return bool(re.search(r"ERR_MODULE_NOT_FOUND|ERR_INVALID_TYPESCRIPT_SYNTAX|ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX|"
+                              r"SyntaxError|Cannot find module|does not provide an export|No test files|ℹ tests 0", out))
     return bool(re.search(r"\[build failed\]|\[setup failed\]|error\[E\d+\]|could not compile|error CS\d+|Build FAILED", out))
 
 
@@ -99,6 +129,13 @@ def test_cmd_for(unit: dict):
         if unit.get("filter"):
             cmd += ["--filter", unit["filter"]]
         return cmd, WORK
+    if LANG == "typescript":
+        rel = path.relative_to(WORK)
+        tests = rel / "tests" if kind == "project" else rel
+        return ["node", "--test", f"{tests}/**/*.test.ts"], WORK
+    if LANG == "python":
+        rel = path.relative_to(WORK)
+        return ["python", "-m", "pytest", str(rel / "tests" if kind == "project" else rel)], WORK
     raise SystemExit(f"unknown language {LANG}")
 
 
@@ -141,6 +178,12 @@ def main():
     if WORK.exists():
         shutil.rmtree(WORK)
     shutil.copytree(SRC, WORK, ignore=IGNORE, copy_function=shutil.copy)
+    if LANG == "typescript":
+        if not (SRC / "node_modules").is_dir():
+            sys.exit("languages/typescript/node_modules missing: run `npm ci` there first")
+        (WORK / "node_modules").symlink_to(SRC / "node_modules")
+    if LANG == "python" and not (VENV / "bin" / "python").exists():
+        sys.exit(f"Python venv not found at {VENV}: python -m venv {VENV} && {VENV}/bin/pip install -r languages/python/requirements.txt")
     units = discover()
     print(f"Verifying {LANG}: {len(units)} units\n")
 
@@ -157,8 +200,8 @@ def main():
         if rc == 0:
             record(f"{u['name']} [starter must fail]", False, "starter tests already pass")
             continue
-        if compile_error(out):
-            record(f"{u['name']} [starter must fail]", False, "starter does not compile:\n" + out)
+        if compile_error(out, rc):
+            record(f"{u['name']} [starter must fail]", False, "starter fails for the wrong reason (build/import error or no tests):\n" + out)
             continue
         for s, t in overlays:
             overlay(s, t)
@@ -183,6 +226,11 @@ def main():
                     "set -e; for p in $(find modules projects -name '*.csproj' | sort); do dotnet build \"$p\" --nologo -v q || exit 1; done"]),
                    ("dotnet format", ["bash", "-c",
                     "set -e; for p in $(find modules projects -name '*.csproj' ! -path '*/00-*' | sort); do dotnet format whitespace \"$p\" --verify-no-changes || exit 1; done"])],
+        "typescript": [("tsc typecheck", ["node_modules/.bin/tsc", "-p", "."]),
+                       ("biome check", ["node_modules/.bin/biome", "check", "."])],
+        "python": [("ruff format", ["ruff", "format", "--check", "."]),
+                   ("ruff check", ["ruff", "check", "."]),
+                   ("mypy --strict (per lesson directory)", ["bash", "-c", MYPY_LOOP])],
     }[LANG]
     if not FILTER:
         for name, cmd in checks:

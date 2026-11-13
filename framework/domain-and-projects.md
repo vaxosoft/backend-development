@@ -24,7 +24,7 @@ JSON uses `snake_case` field names in every language. Example:
 {"id":1,"title":"Write docs","status":"todo","due_date":"2030-01-31","tags":["docs","p1"],"owner_id":null,"created_at":"2030-01-01T09:00:00Z"}
 ```
 
-## 2. REST conventions (Go and Rust)
+## 2. REST conventions (Go, Rust, TypeScript and Python)
 
 - Success: `200` (read/update), `201` + `Location` (create), `204` (delete).
 - Errors use one JSON envelope with `Content-Type: application/json`:
@@ -51,7 +51,7 @@ JSON uses `snake_case` field names in every language. Example:
 
 Each project lives in `projects/PN-name/{README.md, starter/, solution/, tests/}` (Rust: tests in `starter/tests/`). The README states requirements and acceptance criteria and lists the modules exercised. Tests are black-box over HTTP against an in-process server built by an entry-point function that the starter already defines (so tests compile against starter and solution alike). Tests must be deterministic, offline (loopback only), fast, and use SQLite in-memory or temp dirs. Starter code compiles and fails the tests.
 
-Pick the language-natural name for the entry point (Go `New(cfg) http.Handler`, Rust `build_app(cfg) -> Router`, C# `public partial class Program` + `WebApplicationFactory`), but keep behaviour identical.
+Pick the language-natural name for the entry point (Go `New(cfg) http.Handler`, Rust `build_app(cfg) -> Router`, C# `public partial class Program` + `WebApplicationFactory`, TypeScript `buildApp(config): Promise<FastifyInstance>` in `starter/src/app.ts` exercised with `app.inject()` or a real listener on port 0, Python `create_app(config) -> FastAPI` in the `pN_name` package exercised with `TestClient` or a real uvicorn server on a free port), but keep behaviour identical. FastAPI's default 422 body and Fastify's default validation error body are replaced by the shared error envelope.
 
 ### P1-hello-http  (modules 01, 02, 10)
 - `GET /healthz` -> 200 `{"status":"ok"}`

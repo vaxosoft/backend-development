@@ -18,7 +18,12 @@ const LANGS = [
   { id: 'go', name: 'Go', blurb: 'Go 1.25+, net/http, database/sql, log/slog. Small standard library, goroutines, single static binary.' },
   { id: 'rust', name: 'Rust', blurb: 'Rust 2024, tokio, axum, sqlx, serde. Ownership and the type system do the heavy lifting.' },
   { id: 'csharp', name: 'C#', blurb: 'C# 14 on .NET 10, ASP.NET Core minimal APIs, ADO.NET and EF Core. Batteries-included platform.' },
+  { id: 'typescript', name: 'TypeScript', blurb: 'TypeScript 7 on Node 24+, Fastify, zod, node:test. Runs .ts directly with no build step.' },
+  { id: 'python', name: 'Python', blurb: 'Python 3.14, FastAPI, pydantic, sqlite3, pytest. Fully type-hinted and mypy-strict.' },
 ];
+const NAMES = LANGS.map((l) => l.name);
+const joinNames = (names) => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0] ?? '');
+const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
 const TOPICS = {
   '01-language-fundamentals': 'Language fundamentals',
   '02-http-server': 'HTTP server',
@@ -45,10 +50,10 @@ const PROJECTS = {
   'P7-tested-service-docker-ci': 'Tested service, Docker, CI',
 };
 
-const SKIP_DIRS = new Set(['bin', 'obj', 'target', 'node_modules', '.git', '.vs', '.idea']);
-const SKIP_FILES = new Set(['go.sum']);
+const SKIP_DIRS = new Set(['bin', 'obj', 'target', 'node_modules', 'dist', '.git', '.vs', '.idea', '.venv', '__pycache__', '.mypy_cache', '.ruff_cache', '.pytest_cache']);
+const SKIP_FILES = new Set(['go.sum', 'package-lock.json']);
 const EXT_LANG = {
-  go: 'go', rs: 'rust', cs: 'csharp', csproj: 'xml', props: 'xml', toml: 'toml', lock: 'toml', yml: 'yaml', yaml: 'yaml',
+  go: 'go', rs: 'rust', cs: 'csharp', ts: 'ts', mts: 'ts', py: 'python', mjs: 'js', cjs: 'js', ini: 'ini', cfg: 'ini', env: 'ini', csproj: 'xml', props: 'xml', toml: 'toml', lock: 'toml', yml: 'yaml', yaml: 'yaml',
   json: 'json', jsonl: 'json', md: 'md', html: 'html', css: 'css', js: 'js', sql: 'sql', sh: 'bash', txt: 'text', csv: 'text',
   xml: 'xml', mod: 'go', tmpl: 'text', dockerignore: 'text',
 };
@@ -405,7 +410,7 @@ for (const [folder, topic] of Object.entries(TOPICS)) {
     const src = `languages/${l.id}/modules/${folder}/README.md`;
     return exists(src) ? { l, src, secs: sections(read(src)) } : null;
   }).filter(Boolean);
-  let md = `Same topic, three languages. Your tab choice is remembered. Full lessons: ${perLang.map((p) => `[${p.l.name}](${url(`${p.l.id}/modules/${folder}`)})`).join(' · ')}.\n`;
+  let md = `Same topic, ${NUM_WORDS[LANGS.length] ?? LANGS.length} languages. Your tab choice is remembered. Full lessons: ${perLang.map((p) => `[${p.l.name}](${url(`${p.l.id}/modules/${folder}`)})`).join(' · ')}.\n`;
   for (const [re, heading] of WANTED) {
     const parts = perLang
       .map((p) => {
@@ -415,12 +420,12 @@ for (const [folder, topic] of Object.entries(TOPICS)) {
       .filter(Boolean);
     if (parts.length) md += `\n## ${heading}\n\n${tabs(parts)}\n`;
   }
-  write(`compare/${folder}`, { title: `Compare: ${topic}`, description: `${topic} in Go, Rust and C#`, tableOfContents: false }, md);
+  write(`compare/${folder}`, { title: `Compare: ${topic}`, description: `${topic} in ${joinNames(NAMES)}`, tableOfContents: false }, md);
 }
 write(
   'compare',
-  { title: 'Compare languages', description: 'The same backend topic in Go, Rust and C#' },
-  `Pick a topic to see how Go, Rust and C# approach it side by side.\n\n| Topic | Compare | Lessons |\n|---|---|---|\n${Object.entries(TOPICS)
+  { title: 'Compare languages', description: `The same backend topic in ${joinNames(NAMES)}` },
+  `Pick a topic to see how ${joinNames(NAMES)} approach it side by side.\n\n| Topic | Compare | Lessons |\n|---|---|---|\n${Object.entries(TOPICS)
     .map(
       ([folder, t]) =>
         `| ${folder.slice(0, 2)} ${t} | [Compare](${url(`compare/${folder}`)}) | ${LANGS.map((l) => `[${l.name}](${url(`${l.id}/modules/${folder}`)})`).join(' · ')} |`,
@@ -447,12 +452,12 @@ write(
   '',
   {
     title: 'Backend Development Learning Paths',
-    description: 'Learn backend development in Go, Rust and C# with runnable examples, exercises and capstone projects.',
+    description: `Learn backend development in ${joinNames(NAMES)} with runnable examples, exercises and capstone projects.`,
     template: 'splash',
     prev: false,
     next: false,
     hero: {
-      tagline: 'One Task Tracker domain, three languages. 14 modules and 7 capstone projects each, with runnable examples and exercises that fail until you solve them.',
+      tagline: `One Task Tracker domain, ${NUM_WORDS[LANGS.length] ?? LANGS.length} languages. 14 modules and 7 capstone projects each, with runnable examples and exercises that fail until you solve them.`,
       actions: [
         { text: 'Pick a language', link: '#languages', icon: 'down-caret' },
         { text: 'Compare languages', link: url('compare'), variant: 'minimal', icon: 'right-arrow' },

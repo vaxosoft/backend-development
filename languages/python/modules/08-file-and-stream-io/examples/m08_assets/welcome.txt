@@ -1,0 +1,2 @@
+Welcome to the Task Tracker!
+This text ships inside the package, next to the code.

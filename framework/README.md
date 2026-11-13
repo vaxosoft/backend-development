@@ -1,6 +1,6 @@
 # Language Learning Framework
 
-A reusable template for generating consistent backend learning material for any language (Go, Rust, Java, C#, Python, ...).
+A reusable template for generating consistent backend learning material for any language (Go, Rust, C#, TypeScript, Python, Java, ...).
 
 **Source of truth for scope:** [../backend-core-topics.md](../backend-core-topics.md) (14 topics + 7 projects, HTTP only, no brokers, no advanced distributed concepts).
 
@@ -82,13 +82,14 @@ Exercises, solutions and projects follow one mechanical rule so a single script 
 - `solutions/` holds **only the files that differ**, at the same relative paths. Overlaying `solutions/` onto `exercises/` must make every test pass. Test files are never in `solutions/`.
 - Projects: `projects/PN-name/{README.md, starter/, solution/, tests/}`. `solution/` overlays `starter/`; `tests/` is never overlaid. (Rust keeps its tests in `starter/tests/`.)
 - Third-party dependencies are pinned once per language (see each `PROFILE.md`). Do not add dependencies while writing a module; if one is truly needed, update the profile first.
+- **Language-specific tooling notes:** TypeScript runs `.ts` directly (Node type stripping), type-checks with `tsc` and tests with `node:test`; its exercise tests are `exercises/exN_name/name.test.ts` next to `name.ts`. Python exercise modules use unique basenames (`mNN_name.py` with `test_mNN_name.py`) because pytest imports test files by basename. Both use one shared dependency manifest at the language root.
 - **Go exception:** Go folders are named `_solutions/` and `_solution/` (leading underscore) because the Go toolchain ignores such directories; otherwise partial overlays would break `go build ./...` and `go vet ./...`.
 - Build artifacts (`bin/`, `obj/`, `target/`) are git-ignored.
 
 Verify a whole track (works on a temp copy, never edits the repo):
 
 ```bash
-scripts/verify.py go        # or: rust | csharp
+scripts/verify.py go        # or: rust | csharp | typescript | python
 scripts/verify.py go 05-    # only units whose name contains "05-"
 ```
 

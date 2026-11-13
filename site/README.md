@@ -5,7 +5,7 @@ A static site (Astro + Starlight) generated from the markdown and source files i
 ## What it adds on top of the markdown
 
 - Sidebar navigation for 14 modules and 7 projects per language, full-text search, dark mode
-- Language switcher on every lesson (same topic in Go, Rust and C#) and a **Compare** page per topic with tabs for approaches, pitfalls and exercises
+- Language switcher on every lesson (same topic in every language) and a **Compare** page per topic with tabs for approaches, pitfalls and exercises
 - **Progress tracking** in the browser (module/project completion, learning-outcome checkboxes, sidebar ticks, "continue where you left off"). Stored in `localStorage` only
 - A **code viewer**: every example, exercise, solution and project file has a highlighted page with breadcrumbs. Exercise pages have a collapsed "Show the reference solution" panel
 
